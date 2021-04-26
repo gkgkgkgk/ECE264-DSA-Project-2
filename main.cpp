@@ -141,9 +141,7 @@ void sortLastNames(list<Data *> &l)
 {
     for (Data *d : l)
     {
-        list<Data *> list = firstNameBins[d->firstName];
-        list.push_back(d);
-        firstNameBins[d->firstName] = list;
+        firstNameBins[d->firstName].push_back(d);
     }
 
     l.clear();
@@ -156,9 +154,7 @@ void sortLastNames(list<Data *> &l)
 
     for (Data *d : l)
     {
-        list<Data *> list = lastNameBins[d->lastName];
-        list.push_back(d);
-        lastNameBins[d->lastName] = list;
+        lastNameBins[d->lastName].push_back(d);
     }
 
     l.clear();
