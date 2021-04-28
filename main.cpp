@@ -174,6 +174,11 @@ bool quickCompare(Data *d1, Data *d2)
     return strcmp(d1->ssn.c_str(), d2->ssn.c_str()) > 0;
 }
 
+bool quickerCompare(Data *d1, Data *d2)
+{
+    return strcmp(d1->ssn.c_str(), d2->ssn.c_str()) < 0;
+}
+
 void t1t2(list<Data *> &l)
 {
     const unsigned int ascii = 65;
@@ -240,62 +245,28 @@ void t3(list<Data *> &l)
     }
 }
 
-void countSort(Data *arr[], int exp)
-{
-    Data *output[1001000]; // output array
-    int i, count[10] = {0};
-    int n = 1001000;
-    // Store count of occurrences in count[]
-    for (i = 0; i < n; i++)
-    {
-        char tmpC[9] = {arr[i]->ssn[0], arr[i]->ssn[1], arr[i]->ssn[2], arr[i]->ssn[4], arr[i]->ssn[5], arr[i]->ssn[7], arr[i]->ssn[8], arr[i]->ssn[9],
-                        arr[i]->ssn[10]};
-        int c = stoi(tmpC);
-        count[(c / exp) % 10]++;
-    }
-    // Change count[i] so that count[i] now contains actual
-    //  position of this digit in output[]
-    for (i = 1; i < 10; i++)
-        count[i] += count[i - 1];
-
-    // Build the output array
-    for (i = n - 1; i >= 0; i--)
-    {
-        char tmpC[9] = {arr[i]->ssn[0], arr[i]->ssn[1], arr[i]->ssn[2], arr[i]->ssn[4], arr[i]->ssn[5], arr[i]->ssn[7], arr[i]->ssn[8], arr[i]->ssn[9],
-                        arr[i]->ssn[10]};
-        int c = stoi(tmpC);
-        output[count[(c / exp) % 10] - 1] = arr[i];
-        count[(c / exp) % 10]--;
-    }
-
-    // Copy the output array to arr[], so that arr[] now
-    // contains sorted numbers according to current digit
-    for (i = 0; i < n; i++)
-        arr[i] = output[i];
-}
-
 void t4(list<Data *> &l)
 {
-    // uint_fast32_t ssn;
-    // unsigned int bnumber;
-    // uint_fast32_t bucketB0[256];
-    // uint_fast32_t bucketB1[256];
-    // uint_fast32_t bucketB2[256];
-    // uint_fast32_t bucketB3[256];
+    vector<Data *> y[1000];
 
-    // for (auto data : l)
-    // {
-    //     char ssnStr[9] = {data->ssn[0], data->ssn[1], data->ssn[2], data->ssn[4], data->ssn[5], data->ssn[7], data->ssn[8], data->ssn[9], data->ssn[10]};
-    //     ssn = strtol(ssnStr, nullptr, 10);
-    //     bnumber = ssn & 0xFFu;
-    //     bucketB0[bnumber] = (data->ssn);
-    // }
-    Data *arr[1001000];
-    std::copy(l.begin(), l.end(), arr);
+    for (auto &data : l)
+    {
+        int i = stoi((data->ssn));
+        y[i].push_back(data);
+    }
 
-    int m = 999999999;
-    for (int exp = 1; m / exp > 0; exp *= 10)
-        countSort(arr, exp);
+    list<Data *>::iterator it = l.begin();
+
+    for (int i = 0; i < 1000; i++)
+    {
+        std::sort(y[i].begin(), y[i].end(), quickerCompare);
+
+        for (auto data : y[i])
+        {
+            *it = data;
+            ++it;
+        }
+    }
 }
 
 void sortDataList(list<Data *> &l)
