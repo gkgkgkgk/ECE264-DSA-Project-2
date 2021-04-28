@@ -118,7 +118,7 @@ int main()
 // class defintions here if you wish.
 #include <unordered_map>
 
-vector<Data *> x[26][26][26][26];
+vector<Data *> x[26][26][26];
 
 int getTestCase(list<Data *> &l)
 {
@@ -187,10 +187,9 @@ void t1t2(list<Data *> &l)
     {
         int i = (data->lastName[0] - ascii);
         int j = (data->lastName[1] - ascii);
-        int k = (data->firstName[0] - ascii);
-        int l = (data->firstName[1] - ascii);
+        int k = (data->lastName[2] - ascii);
 
-        x[i][j][k][l].push_back(data);
+        x[i][j][k].push_back(data);
     }
 
     list<Data *>::iterator it = l.begin();
@@ -201,15 +200,13 @@ void t1t2(list<Data *> &l)
         {
             for (int k = 0; k < 26; k++)
             {
-                for (int l = 0; l < 26; l++)
-                {
-                    std::sort(x[i][j][k][l].begin(), x[i][j][k][l].end(), compare);
 
-                    for (auto data : x[i][j][k][l])
-                    {
-                        *it = data;
-                        ++it;
-                    }
+                std::sort(x[i][j][k].begin(), x[i][j][k].end(), compare);
+
+                for (auto data : x[i][j][k])
+                {
+                    *it = data;
+                    ++it;
                 }
             }
         }
@@ -245,72 +242,25 @@ void t3(list<Data *> &l)
     }
 }
 
-class DataBin
-{
-public:
-    int length = 0;
-    Data *bin[35000];
-    uint_fast32_t ssn[35000];
-};
-
-DataBin b0[256];
-DataBin b1[256];
-DataBin b2[256];
-DataBin b3[256];
-
 void t4(list<Data *> &l)
 {
-    unsigned int bn;
-    int i;
-    int j;
-    long ssn;
-    uint_fast32_t tmp;
-    Data *data;
+    vector<Data *> y[1000];
 
-    for (auto data : l)
+    for (auto &data : l)
     {
-        char ssnTmp[9] = {data->ssn[0], data->ssn[1], data->ssn[2], data->ssn[4], data->ssn[5], data->ssn[7], data->ssn[8], data->ssn[9], data->ssn[10]};
-        bn = (ssn)&0xff;
-        b0[bn].bin[b0[bn].length] = data;
-        b0[bn].ssn[b0[bn].length++] = std::strtol(ssnTmp, nullptr, 10);
-    }
-
-    for (i = 0; i < 256; i++)
-    {
-        for (j = 0; j < b0[i].length; j++)
-        {
-            bn = (ssn >> 8) & 0xff;
-            b1[bn].bin[b1[bn].length] = b0[i].bin[j];
-            b1[bn].ssn[b1[bn].length++] = b0[i].ssn[j];
-        }
-    }
-
-    for (i = 0; i < 256; i++)
-    {
-        for (j = 0; j < b1[i].length; j++)
-        {
-            bn = (ssn >> 16) & 0xff;
-            b2[bn].bin[b2[bn].length] = b1[i].bin[j];
-            b2[bn].ssn[b2[bn].length++] = b1[i].ssn[j];
-        }
-    }
-
-    for (i = 0; i < 256; i++)
-    {
-        for (j = 0; j < b2[i].length; j++)
-        {
-            bn = (ssn >> 24) & 0xff;
-            b3[bn].bin[b3[bn].length] = b2[i].bin[j];
-            b3[bn].ssn[b3[bn].length++] = b2[i].ssn[j];
-        }
+        int i = stoi((data->ssn));
+        y[i].push_back(data);
     }
 
     list<Data *>::iterator it = l.begin();
-    for (int i = 0; i < 256; ++i)
+
+    for (int i = 0; i < 1000; i++)
     {
-        for (int j = 0; j < b3[i].length; ++j)
+        std::sort(y[i].begin(), y[i].end(), quickerCompare);
+
+        for (auto data : y[i])
         {
-            *it = b3[i].bin[j];
+            *it = data;
             ++it;
         }
     }
