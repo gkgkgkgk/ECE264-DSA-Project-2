@@ -8,6 +8,9 @@
         "vector": "cpp",
         "xhash": "cpp",
         "xutility": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "array": "cpp",
+        "xlocale": "cpp",
+        "xlocinfo": "cpp"
     }
 }
