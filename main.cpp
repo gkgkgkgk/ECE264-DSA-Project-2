@@ -242,10 +242,47 @@ void t3(list<Data *> &l)
 
 void t4(list<Data *> &l)
 {
+    Data *arr[1000321];
+    std::copy(l.begin(), l.end(), arr);
+
+    Data *output[1000321];
+    int count1[999], i;
+    int count2[99];
+    int count3[9999];
+
+    for (i = 1000320; i >= 0; --i)
+    {
+        string s = (arr[i]->ssn).substr(0, 3);
+        int c = count1[std::stoi(s)] - 1;
+        output[c] = arr[i];
+        --count1[std::stoi(s)];
+    }
+
+    // for (i = sizeof(arr) - 1; i >= 0; --i)
+    // {
+    //     int c = count2[std::stoi(arr[i]->ssn.substr(0, 3))] - 1;
+    //     output[c] = arr[i];
+    //     --count2[std::stoi(arr[i]->ssn.substr(4, 2))];
+    // }
+
+    // for (i = sizeof(arr) - 1; i >= 0; --i)
+    // {
+    //     int c = count2[std::stoi(arr[i]->ssn.substr(0, 3))] - 1;
+    //     output[c] = arr[i];
+    //     --count2[std::stoi(arr[i]->ssn.substr(7, 4))];
+    // }
+
+    // auto it = l.begin();
+    // for (int i = 0; i < 1001000; ++i)
+    // {
+    //     *it = output[i];
+    //     ++it;
+    // }
 }
 
 void sortDataList(list<Data *> &l)
 {
+
     switch (getTestCase(l))
     {
     case 1:
