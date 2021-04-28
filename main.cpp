@@ -240,44 +240,62 @@ void t3(list<Data *> &l)
     }
 }
 
-void t4(list<Data *> &l)
+void countSort(Data *arr[], int exp)
 {
-    Data *arr[1000321];
-    std::copy(l.begin(), l.end(), arr);
-
-    Data *output[1000321];
-    int count1[999], i;
-    int count2[99];
-    int count3[9999];
-
-    for (i = 1000320; i >= 0; --i)
+    Data *output[1001000]; // output array
+    int i, count[10] = {0};
+    int n = 1001000;
+    // Store count of occurrences in count[]
+    for (i = 0; i < n; i++)
     {
-        string s = (arr[i]->ssn).substr(0, 3);
-        int c = count1[std::stoi(s)] - 1;
-        output[c] = arr[i];
-        --count1[std::stoi(s)];
+        char tmpC[9] = {arr[i]->ssn[0], arr[i]->ssn[1], arr[i]->ssn[2], arr[i]->ssn[4], arr[i]->ssn[5], arr[i]->ssn[7], arr[i]->ssn[8], arr[i]->ssn[9],
+                        arr[i]->ssn[10]};
+        int c = stoi(tmpC);
+        count[(c / exp) % 10]++;
+    }
+    // Change count[i] so that count[i] now contains actual
+    //  position of this digit in output[]
+    for (i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+
+    // Build the output array
+    for (i = n - 1; i >= 0; i--)
+    {
+        char tmpC[9] = {arr[i]->ssn[0], arr[i]->ssn[1], arr[i]->ssn[2], arr[i]->ssn[4], arr[i]->ssn[5], arr[i]->ssn[7], arr[i]->ssn[8], arr[i]->ssn[9],
+                        arr[i]->ssn[10]};
+        int c = stoi(tmpC);
+        output[count[(c / exp) % 10] - 1] = arr[i];
+        count[(c / exp) % 10]--;
     }
 
-    // for (i = sizeof(arr) - 1; i >= 0; --i)
-    // {
-    //     int c = count2[std::stoi(arr[i]->ssn.substr(0, 3))] - 1;
-    //     output[c] = arr[i];
-    //     --count2[std::stoi(arr[i]->ssn.substr(4, 2))];
-    // }
+    // Copy the output array to arr[], so that arr[] now
+    // contains sorted numbers according to current digit
+    for (i = 0; i < n; i++)
+        arr[i] = output[i];
+}
 
-    // for (i = sizeof(arr) - 1; i >= 0; --i)
-    // {
-    //     int c = count2[std::stoi(arr[i]->ssn.substr(0, 3))] - 1;
-    //     output[c] = arr[i];
-    //     --count2[std::stoi(arr[i]->ssn.substr(7, 4))];
-    // }
+void t4(list<Data *> &l)
+{
+    // uint_fast32_t ssn;
+    // unsigned int bnumber;
+    // uint_fast32_t bucketB0[256];
+    // uint_fast32_t bucketB1[256];
+    // uint_fast32_t bucketB2[256];
+    // uint_fast32_t bucketB3[256];
 
-    // auto it = l.begin();
-    // for (int i = 0; i < 1001000; ++i)
+    // for (auto data : l)
     // {
-    //     *it = output[i];
-    //     ++it;
+    //     char ssnStr[9] = {data->ssn[0], data->ssn[1], data->ssn[2], data->ssn[4], data->ssn[5], data->ssn[7], data->ssn[8], data->ssn[9], data->ssn[10]};
+    //     ssn = strtol(ssnStr, nullptr, 10);
+    //     bnumber = ssn & 0xFFu;
+    //     bucketB0[bnumber] = (data->ssn);
     // }
+    Data *arr[1001000];
+    std::copy(l.begin(), l.end(), arr);
+
+    int m = 999999999;
+    for (int exp = 1; m / exp > 0; exp *= 10)
+        countSort(arr, exp);
 }
 
 void sortDataList(list<Data *> &l)
