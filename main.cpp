@@ -213,11 +213,12 @@ void t1t2(list<Data *> &l)
     }
 }
 
+Data *arr[1001000];
+
 void t3(list<Data *> &l)
 {
     int n = l.size();
     int i, j;
-    Data *arr[1001000];
     std::copy(l.begin(), l.end(), arr);
 
     Data *key;
